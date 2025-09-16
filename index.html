@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sikkim Monasteries App</title>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+	<style>
+		.map-header-row {
+			display: flex;
+			align-items: center;
+			gap: 18px;
+			margin-bottom: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin: 48px auto 36px auto;
+			background: #181818;
+			border: 6px solid #2563eb;
+			border-radius: 0 0 32px 0;
+			box-shadow: 12px 12px 0 #10b981, 0 6px 32px #2563eb22;
+			padding: 32px 48px 18px 48px;
+			max-width: 600px;
+			position: relative;
+		}
+		.map-section-title {
+			display: flex;
+			align-items: center;
+			background: #ffe600;
+			color: #181818;
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 1.6rem;
+			font-weight: 900;
+			letter-spacing: 1px;
+			border: 4px solid #2563eb;
+			border-radius: 8px 0 18px 0;
+			box-shadow: 4px 4px 0 #10b981;
+			padding: 0 32px 0 18px;
+			height: 56px;
+			text-transform: uppercase;
+			white-space: nowrap;
+		}
+		.map-section-title .emoji {
+			font-size: 2.1rem;
+			margin-right: 12px;
+		}
+		.map-btn {
+			background: #ffe600;
+			color: #181818;
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 1.1rem;
+			font-weight: 900;
+			border: 4px solid #2563eb;
+			border-radius: 0 18px 18px 0;
+			box-shadow: 4px 4px 0 #10b981;
+			padding: 0 28px;
+			height: 56px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			transition: background 0.2s, color 0.2s, transform 0.2s;
+			text-transform: uppercase;
+		}
+		.map-btn:hover {
+			background: #2563eb;
+			color: #fff;
+			border-color: #10b981;
+			transform: scale(1.04) rotate(-2deg);
+		}
+	body {
+	    font-family: 'Montserrat', 'Oswald', Arial, sans-serif;
+	    background: linear-gradient(to bottom, #80adf5 0%, #87bfef 50%, #e0e7ef 100%);
+	    color: #181818;
+	    margin: 0;
+	    padding: 0;
+	    min-height: 100vh;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	}
+		.container {
+			max-width: 950px;
+			margin: 0 auto;
+			padding: 40px 18px;
+		}
+		h1 {
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 3.2rem;
+			font-weight: 900;
+			letter-spacing: 2px;
+			margin-bottom: 10px;
+			color: #fff;
+			background: #181818;
+			display: inline-block;
+			padding: 12px 32px 8px 32px;
+			border: 5px solid #2563eb;
+			border-radius: 0 0 24px 0;
+			box-shadow: 8px 8px 0 #10b981, 0 4px 24px #2563eb22;
+			text-transform: uppercase;
+		}
+		h2 {
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 2rem;
+			font-weight: 900;
+			margin: 36px 0 18px 0;
+			color: #181818;
+			background: #ffe600;
+			display: inline-block;
+			padding: 6px 18px 2px 18px;
+			border: 3px solid #2563eb;
+			border-radius: 0 0 18px 0;
+			box-shadow: 6px 6px 0 #2563eb, 0 2px 12px #2563eb22;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+		}
+		.section {
+			background: linear-gradient(120deg, #f7fafc 80%, #e0f2fe 100%);
+			border-radius: 0 32px 0 32px;
+			box-shadow: 8px 8px 0 #2563eb, 0 6px 24px rgba(30,41,59,0.10);
+			padding: 32px 28px 28px 28px;
+			margin-bottom: 38px;
+			border: 4px solid #181818;
+			position: relative;
+		}
+		.section:before {
+			content: '';
+			position: absolute;
+			top: -18px; left: -18px;
+			width: 60px; height: 60px;
+			background: #ffe600;
+			border: 4px solid #2563eb;
+			border-radius: 0 32px 0 0;
+			z-index: 1;
+		}
+		.ai-qa-row {
+			display: flex;
+			align-items: stretch;
+			gap: 36px;
+			margin-bottom: 0;
+			background: linear-gradient(90deg, #f7fafc 80%, #e0f2fe 100%);
+			border-radius: 18px;
+			box-shadow: 0 2px 12px #2563eb11;
+			padding: 10px 18px 10px 10px;
+		}
+		.ai-qa-label {
+			display: flex;
+			align-items: center;
+			background: #ffe600;
+			color: #181818;
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 1.6rem;
+			font-weight: 900;
+			letter-spacing: 1px;
+			border: 4px solid #2563eb;
+			border-right: none;
+			border-radius: 8px 0 0 24px;
+			box-shadow: 4px 4px 0 #10b981;
+			padding: 0 32px 0 18px;
+			height: 64px;
+			text-transform: uppercase;
+			white-space: nowrap;
+		}
+		.ai-qa-label .emoji {
+			font-size: 2.1rem;
+			margin-right: 12px;
+		}
+		.ai-qa-btn {
+			background: #ffe600;
+			color: #181818;
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 1.25rem;
+			font-weight: 900;
+			border: 4px solid #2563eb;
+			border-left: none;
+			border-radius: 0 18px 24px 0;
+			box-shadow: 4px 4px 0 #10b981;
+			padding: 0 38px;
+			height: 64px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			transition: background 0.2s, color 0.2s, transform 0.2s;
+			text-transform: uppercase;
+		}
+		.ai-qa-btn:hover {
+			background: #2563eb;
+			color: #fff;
+			border-color: #10b981;
+			transform: scale(1.04) rotate(-2deg);
+		}
+		.map-container {
+			width: 100%;
+			height: 340px;
+			border-radius: 0 18px 0 18px;
+			border: 4px solid #2563eb;
+			margin: 18px 0;
+			background: #ffe600;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #181818;
+			font-size: 1.25rem;
+			box-shadow: 4px 4px 0 #10b981, 0 2px 8px #2563eb22;
+		}
+		.booking-form {
+			display: flex;
+			flex-direction: column;
+			gap: 14px;
+			max-width: 370px;
+		}
+		.booking-form input, .booking-form select {
+			padding: 10px 12px;
+			border-radius: 0 8px 0 8px;
+			border: 3px solid #2563eb;
+			font-size: 1.08rem;
+			font-family: 'Montserrat', Arial, sans-serif;
+			font-weight: 700;
+			background: #fff;
+			color: #181818;
+			box-shadow: 2px 2px 0 #10b981;
+		}
+		.booking-form input:focus, .booking-form select:focus {
+			outline: 2px solid #2563eb;
+			border-color: #10b981;
+		}
+		.booking-form button {
+			background: #2563eb;
+			color: #fff;
+			border: 4px solid #10b981;
+			border-radius: 0 12px 0 12px;
+			padding: 14px 0;
+			font-size: 1.18rem;
+			font-weight: 900;
+			letter-spacing: 1px;
+			cursor: pointer;
+			margin-top: 10px;
+			box-shadow: 4px 4px 0 #ffe600;
+			text-transform: uppercase;
+			transition: background 0.2s, transform 0.2s;
+		}
+		.booking-form button:hover {
+			background: #10b981;
+			color: #181818;
+			border-color: #2563eb;
+			transform: scale(1.04) rotate(2deg);
+		}
+		/* Bold brutalist for virtual tour thumbnails */
+		#tour-thumbnails {
+			margin-top: 10px;
+		}
+		.tour-thumb {
+			border: 4px solid #2563eb;
+			box-shadow: 4px 4px 0 #ffe600;
+			transition: border 0.2s, transform 0.2s;
+			background: #fff;
+		}
+		.tour-thumb:hover {
+			border: 4px solid #10b981;
+			transform: scale(1.08) rotate(-2deg);
+			box-shadow: 6px 6px 0 #2563eb;
+		}
+		/* Modal brutalist */
+		#pano-modal .modal-title, #modal-3d .modal-title {
+			font-family: 'Oswald', 'Montserrat', Arial, sans-serif;
+			font-size: 1.5rem;
+			font-weight: 900;
+			color: #2563eb;
+			margin-bottom: 8px;
+			text-transform: uppercase;
+			background: #ffe600;
+			border: 3px solid #2563eb;
+			border-radius: 0 0 12px 0;
+			display: inline-block;
+			padding: 4px 16px 2px 16px;
+			box-shadow: 2px 2px 0 #10b981;
+		}
+		/* Misc */
+		::selection {
+			background: #ffe60099;
+		}
+		@media (max-width: 600px) {
+			h1 { font-size: 2.1rem; }
+			h2 { font-size: 1.2rem; }
+			.section { padding: 18px 6px 16px 6px; }
+			.container { padding: 12px 2px; }
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="main-hero-box">
+			<h1>MONASTERY360 <p style="font-size: small;">Tourism &amp; Cultural Preservation Platform</p></h1>
+			
+		</div>
+        
+
+		<!-- Virtual Tour Section -->
+		<div class="section" id="virtual-tour-section">
+			<h2>🕍 Virtual Tour</h2>
+			<div id="tour-thumbnails" style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;">
+				<img src="img.jpg" alt="Monastery 360" class="tour-thumb" data-img="img.jpg" style="width:120px;height:70px;object-fit:cover;cursor:pointer;border-radius:8px;border:2px solid #2563eb;">
+				<img src="img2.jpg" alt="Monastery 360" class="tour-thumb" data-img="img2.jpg" style="width:120px;height:70px;object-fit:cover;cursor:pointer;border-radius:8px;border:2px solid #2563eb;">
+				<img src="img3.jpg" alt="Monastery 360" class="tour-thumb" data-img="img3.jpg" style="width:120px;height:70px;object-fit:cover;cursor:pointer;border-radius:8px;border:2px solid #2563eb;">
+				<img src="img5.jpg" alt="Monastery 360" class="tour-thumb" data-img="img5.jpg" style="width:120px;height:70px;object-fit:cover;cursor:pointer;border-radius:8px;border:2px solid #2563eb;">
+				<img src="img6.jpeg" alt="Monastery 360" class="tour-thumb" data-img="img6.jpeg" style="width:120px;height:70px;object-fit:cover;cursor:pointer;border-radius:8px;border:2px solid #2563eb;">
+			</div>
+		</div>
+
+		<!-- 360 Modal Viewer -->
+		<div id="pano-modal" style="display:none;position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:rgba(30,41,59,0.8);align-items:center;justify-content:center;">
+			<div style="background:#fff;padding:12px 12px 0 12px;border-radius:16px;box-shadow:0 8px 32px rgba(30,41,59,0.18);max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+				<span id="close-pano-btn" style="align-self:flex-end;font-size:2rem;cursor:pointer;font-weight:900;color:#2563eb;">&times;</span>
+				<div id="pano-scroll-container" style="width:70vw;max-width:900px;height:60vh;max-height:500px;overflow:hidden;position:relative;background:#000;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+					<img id="pano-img" src="" alt="Panoramic View" style="height:100%;max-height:100%;cursor:grab;transition:transform 0.2s;user-select:none;" draggable="false">
+				</div>
+				<div style="color:#475569;font-size:1rem;margin:8px 0 16px 0;">Scroll to zoom, drag to pan left/right</div>
+			</div>
+		</div>
+
+		<!-- 3D View Modal -->
+		<div id="modal-3d" style="display:none;position:fixed;z-index:1000;top:0;left:0;width:100vw;height:100vh;background:rgba(30,41,59,0.7);align-items:center;justify-content:center;">
+			<div style="background:#fff;padding:24px 24px 12px 24px;border-radius:16px;box-shadow:0 8px 32px rgba(30,41,59,0.18);max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+				<span id="close-3d-btn" style="align-self:flex-end;font-size:2rem;cursor:pointer;font-weight:900;color:#2563eb;">&times;</span>
+				<div style="width:400px;max-width:80vw;height:400px;max-height:60vh;display:flex;align-items:center;justify-content:center;">
+					<img id="img-3d" src="img6.jpeg" alt="3D Monastery View" style="width:100%;height:100%;object-fit:contain;box-shadow:0 8px 32px rgba(30,41,59,0.18);border-radius:12px;transform:perspective(600px) rotateY(-18deg) rotateX(8deg);transition:transform 0.3s;cursor:grab;" draggable="false">
+				</div>
+				<div style="color:#475569;font-size:1rem;margin-top:8px;">Click and drag to rotate</div>
+			</div>
+		</div>
+
+		<!-- AI Q&A Section -->
+		<div class="section" id="ai-qa-section">
+			   <div class="ai-qa-row">
+				   <span class="ai-qa-label"><span class="emoji">🤖</span>ASK ABOUT MONASTERIES</span>
+				   <button class="ai-qa-btn" onclick="alert('AI Q&A coming soon!')">ASK AI FOR INFO</button>
+			   </div>
+			   <div id="ai-qa-result" style="margin-top:16px;color:#475569;"></div>
+		</div>
+
+		<!-- Map Section -->
+		<div class="section" id="map-section">
+			   <div class="map-header-row">
+				   <span class="map-section-title"><span class="emoji">🗺️</span>NEARBY MONASTERIES</span>
+				   <button class="map-btn" id="locate-btn">Find My Location & Show Nearby</button>
+			   </div>
+			   <div class="map-container" id="map-view" style="position:relative;min-height:320px;">
+				<span id="map-status" style="z-index:2;position:relative;">Click the button to allow location access and see nearby monasteries.</span>
+				<div id="map-canvas" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:1;"></div>
+			</div>
+			<ul id="nearby-list" style="margin-top:18px;"></ul>
+		</div>
+
+		<!-- Booking Section -->
+		<div class="section" id="booking-section">
+			<h2>📅 Book a Tour</h2>
+			<form class="booking-form" id="booking-form">
+				<input type="text" placeholder="Your Name" required />
+				<input type="email" placeholder="Email" required />
+				<select required>
+					<option value="">Select Monastery</option>
+					<option>Rumtek</option>
+					<option>Pemayangtse</option>
+					<option>Tashiding</option>
+					<option>Enchey</option>
+				</select>
+				<input type="date" required />
+				<button type="submit">Book Now</button>
+			</form>
+			<div id="booking-result" style="margin-top:12px;color:#059669;"></div>
+		</div>
+	</div>
+	<script src="virtual-tour.js"></script>
+	<script src="monastery-tours.js"></script>
+	<script>
+	// Panoramic image modal logic
+	const panoModal = document.getElementById('pano-modal');
+	const closePanoBtn = document.getElementById('close-pano-btn');
+	const panoImg = document.getElementById('pano-img');
+	const panoScroll = document.getElementById('pano-scroll-container');
+	let isPanning = false, startX = 0, scrollX = 0, zoom = 1;
+	document.querySelectorAll('.tour-thumb').forEach(img => {
+		img.onclick = function() {
+			panoModal.style.display = 'flex';
+			panoImg.src = this.dataset.img;
+			panoImg.onload = function() {
+				// Center the image horizontally
+				const container = panoScroll;
+				const imgWidth = panoImg.naturalWidth;
+				const contWidth = container.offsetWidth;
+				zoom = 1;
+				// Center horizontally
+				scrollX = (contWidth - imgWidth * zoom) / 2;
+				panoImg.style.transform = `translateX(${scrollX}px) scale(${zoom})`;
+			};
+		};
+	});
+	closePanoBtn.onclick = () => {
+		panoModal.style.display = 'none';
+		panoImg.src = '';
+	};
+	panoModal.onclick = (e) => {
+		if (e.target === panoModal) {
+			panoModal.style.display = 'none';
+			panoImg.src = '';
+		}
+	};
+	// Pan left/right by dragging
+	panoImg.onmousedown = function(e) {
+		isPanning = true;
+		startX = e.clientX;
+		panoImg.style.cursor = 'grabbing';
+	};
+	window.onmousemove = function(e) {
+		if (!isPanning) return;
+		scrollX += (e.clientX - startX);
+		panoImg.style.transform = `translateX(${scrollX}px) scale(${zoom})`;
+		startX = e.clientX;
+	};
+	window.onmouseup = function() {
+		isPanning = false;
+		panoImg.style.cursor = 'grab';
+	};
+	// Zoom in/out with scroll
+	panoScroll.addEventListener('wheel', function(e) {
+	e.preventDefault();
+	const container = panoScroll;
+	const imgWidth = panoImg.naturalWidth;
+	const contWidth = container.offsetWidth;
+	zoom += e.deltaY < 0 ? 0.1 : -0.1;
+	zoom = Math.max(1, Math.min(zoom, 3));
+	// Adjust scrollX to keep image centered on zoom
+	scrollX = Math.min(0, Math.max(contWidth - imgWidth * zoom, scrollX));
+	panoImg.style.transform = `translateX(${scrollX}px) scale(${zoom})`;
+	});
+	</script>
+	<script src="ai-qa.js"></script>
+		<script src="map.js"></script>
+		<!-- Leaflet.js for OpenStreetMap -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<script>
+		// --- Map & Nearby Monasteries with Leaflet.js ---
+		const monasteries = [
+			{ name: "Rumtek Monastery", lat: 27.3331, lng: 88.6122 },
+			{ name: "Pemayangtse Monastery", lat: 27.2172, lng: 88.2586 },
+			{ name: "Tashiding Monastery", lat: 27.2882, lng: 88.3247 },
+			{ name: "Enchey Monastery", lat: 27.3406, lng: 88.6136 },
+			{ name: "Ralang Monastery", lat: 27.2852, lng: 88.3712 },
+			{ name: "Phodong Monastery", lat: 27.4202, lng: 88.5912 }
+		];
+		const locateBtn = document.getElementById('locate-btn');
+		const mapStatus = document.getElementById('map-status');
+		const mapView = document.getElementById('map-view');
+		const mapCanvas = document.getElementById('map-canvas');
+		const nearbyList = document.getElementById('nearby-list');
+		let leafletMap = null;
+		locateBtn.onclick = function() {
+			mapStatus.textContent = 'Requesting location...';
+			if (!navigator.geolocation) {
+				mapStatus.textContent = 'Geolocation is not supported by your browser.';
+				return;
+			}
+			navigator.geolocation.getCurrentPosition(function(pos) {
+				const userLat = pos.coords.latitude;
+				const userLng = pos.coords.longitude;
+				mapStatus.textContent = `Your location: ${userLat.toFixed(4)}, ${userLng.toFixed(4)}`;
+				// Find nearby monasteries (within 50km)
+				const R = 6371; // km
+				function dist(lat1, lng1, lat2, lng2) {
+					const dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
+					const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+					return 2*R*Math.asin(Math.sqrt(a));
+				}
+				const found = monasteries.map(m => ({...m, d: dist(userLat, userLng, m.lat, m.lng)})).filter(m => m.d < 50).sort((a,b)=>a.d-b.d);
+				if (found.length === 0) {
+					nearbyList.innerHTML = '<li>No monasteries found within 50km.</li>';
+				} else {
+					nearbyList.innerHTML = found.map(m => `<li><b>${m.name}</b> (${m.d.toFixed(1)} km away)</li>`).join('');
+				}
+				// Show interactive map with user and monasteries
+				mapCanvas.innerHTML = '';
+				if (leafletMap) {
+					leafletMap.remove();
+				}
+				leafletMap = L.map(mapCanvas, { zoomControl: true }).setView([userLat, userLng], 10);
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					attribution: '&copy; OpenStreetMap contributors'
+				}).addTo(leafletMap);
+				// User marker
+				L.marker([userLat, userLng], {title:'You', icon: L.icon({iconUrl:'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],shadowUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',shadowSize:[41,41]})}).addTo(leafletMap).bindPopup('You are here').openPopup();
+				// Monastery markers
+				found.forEach(m => {
+					L.marker([m.lat, m.lng], {title:m.name, icon: L.icon({iconUrl:'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-blue.png',iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],shadowUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',shadowSize:[41,41]})}).addTo(leafletMap).bindPopup(m.name);
+				});
+			}, function(err) {
+				mapStatus.textContent = 'Location permission denied or unavailable.';
+			});
+		};
+		</script>
+	<script src="booking.js"></script>
+	<script>
+		// Booking form handler (demo only)
+		document.getElementById('booking-form').onsubmit = function(e) {
+			e.preventDefault();
+			document.getElementById('booking-result').innerText = 'Tour booked! (Demo)';
+			this.reset();
+		};
+	</script>
+</body>
+</html>
